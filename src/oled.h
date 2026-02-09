@@ -103,6 +103,7 @@ void showSplashscreen() {
 
 void showSlotscreen() {
     oled.clearDisplay();
+    oled.setTextColor(SSD1306_WHITE);
     oled.setCursor(0, 0);
     oled.print("SLOTS:");
     for (int i = 0; i<5; i++) {
@@ -110,6 +111,18 @@ void showSlotscreen() {
         oled.printf("%d: leer", i+1);
     }
     oled.display();
+}
+
+void initializeOLED()
+{
+    oled.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
+    // stellt die refresh rate des displays ein, damit QR-Codes gut mit dem
+    // Handy gescannt werden können
+    oled.ssd1306_command(SSD1306_SETDISPLAYCLOCKDIV);
+    oled.ssd1306_command(0xA0);
+    oled.clearDisplay();
+    oled.display();
+    oled.setTextColor(SSD1306_WHITE);
 }
 
 

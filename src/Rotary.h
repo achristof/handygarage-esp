@@ -8,9 +8,11 @@
 #include <Arduino.h>
 
 // Pins für KY-040
-#define ENCODER_CLK 21
-#define ENCODER_DT  20
+#define ENCODER_CLK 23
+#define ENCODER_DT  22
 #define ENCODER_SW  15
+
+#define DEBOUNCE_TIME 100
 
 // Schwellenwert für langen Tastendruck (ms)
 #define LONG_PRESS_TIME 800
@@ -27,7 +29,7 @@ void IRAM_ATTR handleRotary() {
   static unsigned long lastInterruptTime = 0;
   unsigned long interruptTime = millis();
 
-  if (interruptTime - lastInterruptTime > 5) { // Minimales Software-Debounce
+  if (interruptTime - lastInterruptTime > DEBOUNCE_TIME) { // Minimales Software-Debounce
     RotaryEvent event = (digitalRead(ENCODER_DT)) ? ROTARY_CW : ROTARY_CCW;
     xQueueSendFromISR(RotaryEventQueue, &event, NULL);
   }
@@ -44,13 +46,12 @@ void IRAM_ATTR handleButton() {
   } else {
     // Beim Loslassen Zeit messen
     unsigned long duration = now - pressStartTime;
-    if (duration > 50) { // Entprellen
+    if (duration > DEBOUNCE_TIME) { // Entprellen
       RotaryEvent event = (duration > LONG_PRESS_TIME) ? LONG_PRESS : SHORT_PRESS;
       xQueueSendFromISR(RotaryEventQueue, &event, NULL);
     }
   }
 }
-
 
 
 void initializeRotary() {

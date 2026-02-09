@@ -32,28 +32,18 @@ void IRAM_ATTR handleTimerInterrupt() {
 }
 
 void setup() {
-	// Serial.begin(115200);
-
-
 	// Initialize Slotsensors
 	for (int i = 0; i < 5; i++) {
 		pinMode(sensorSlotPin[i], INPUT);
 	}
 
-	// I2C Initialisierung für ESP32-C6 (SDA=6, SCL=7)
+	// Initialize I2C for ESP32-C6 (SDA=6, SCL=7)
 	Wire.begin(6, 7);
 
 	// Initialize OLED display
-	oled.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
-	// stellt die refresh rate des displays ein, damit QR-Codes gut mit dem
-	// Handy gescannt werden können
-	oled.ssd1306_command(SSD1306_SETDISPLAYCLOCKDIV);
-	oled.ssd1306_command(0xA0);
-	oled.clearDisplay();
-	oled.display();
-	oled.setTextColor(SSD1306_WHITE);
+	initializeOLED();
 
-	// Initialize preferences store and get stored values
+	// Initialize preferences store and get stored/default values
 	prefs.begin("handygarage", false);
 	garageId = (prefs.isKey("garageId")) ? prefs.getString("garageId") : "";
 	wifi_ssid = (prefs.isKey("wifi_ssid")) ? prefs.getString("wifi_ssid") : "Trireme";
@@ -63,14 +53,15 @@ void setup() {
 	// Initialize Rotary Encoder
 	initializeRotary();
 
-	// Initialize Menu
-	initializeMenu();
-
 	// Show splashscreen and Slotscreen
 	showSplashscreen();
 	showSlotscreen();
 
 	timerCheckSlotState.attach(0.25, handleTimerInterrupt);
+
+	// Initialize Menu
+	initializeMenu();
+
 }
 
 
