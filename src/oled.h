@@ -123,6 +123,7 @@ void initializeOLED()
     oled.clearDisplay();
     oled.display();
     oled.setTextColor(SSD1306_WHITE);
+    oled.cp437(true);
 }
 
 

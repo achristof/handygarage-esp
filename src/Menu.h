@@ -35,12 +35,11 @@ void drawMenu(MenuState state, int selectedIndex) {
 
     if (state == MAIN_MENU)
     {
-        oled.print("--- HAUPTMEN");
-        oled.print(char(0x9A)); // Ü
-        oled.println(" ---");
+        oled.print(menu_main_title);
 
         for (int i = 0; i < menu_main_count; i++)
         {
+            oled.setCursor(0,yRowText[i]);
             if (i == selectedIndex) {
                 oled.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Invertierte Farben für Selektion
             } else {
@@ -48,6 +47,25 @@ void drawMenu(MenuState state, int selectedIndex) {
             }
             oled.println(menu_main_entries[i]);
         }
+        menuEntriesCount = menu_main_count;
+        oled.display();
+    }
+
+    if (state == WIFI_MENU)
+    {
+        oled.print(menu_wifi_title);
+
+        for (int i = 0; i < menu_wifi_count; i++)
+        {
+            oled.setCursor(0,yRowText[i]);
+            if (i == selectedIndex) {
+                oled.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Invertierte Farben für Selektion
+            } else {
+                oled.setTextColor(SSD1306_WHITE);
+            }
+            oled.println(menu_wifi_entries[i]);
+        }
+        menuEntriesCount = menu_wifi_count;
         oled.display();
     }
 }
@@ -116,6 +134,21 @@ void menuTask(void *pvParameters) {
                     }
                 }
                 if (currentState == WIFI_MENU) {
+                    switch (selectedIndex)
+                    {
+                    case 0:
+                        // Scannen...
+                        break;
+                    case 1:
+                        // Manuell eingeben
+                        break;
+                    case 2:
+                        // Zurück
+                        currentState = MAIN_MENU;
+                        selectedIndex = 0;
+                        drawMenu(currentState, selectedIndex);
+                        break;
+                    }
 
                 }
                 if (currentState == WIFI_SCAN)

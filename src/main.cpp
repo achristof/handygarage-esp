@@ -38,7 +38,7 @@ void setup() {
 	}
 
 	// Initialize I2C for ESP32-C6 (SDA=6, SCL=7)
-	Wire.begin(6, 7);
+	Wire.begin(18, 19);
 
 	// Initialize OLED display
 	initializeOLED();
