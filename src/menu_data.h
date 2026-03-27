@@ -5,14 +5,12 @@
 #ifndef HANDYGARAGE_ESP_MENU_DATA_H
 #define HANDYGARAGE_ESP_MENU_DATA_H
 
-#include <Arduino.h>
-
 // MAXIMAL 5 Menüeinträge!!
 
-// Hex-Codes für Umlaute: \x81 = ä, \x84 = Ä, \x94 = ö, \x99 = Ö, \x84 = ü, \x9a = Ü, \x9f = ß
+// Hex-Codes für Umlaute: \x84 = ä, \x84 = Ä, \x94 = ö, \x99 = Ö, \x81 = ü, \x9a = Ü, \x9f = ß
 
 // Menütext für Hauptmenü
-const char menu_main_title[] PROGMEM = "--- HAUPTMEN\x9a" " ---";
+const char menu_main_title[] PROGMEM = "HAUPTMEN\x9a";
 const char menu_main_0[] PROGMEM = "> WIFI-Einstellungen ";
 const char menu_main_1[] PROGMEM = "> Garagen-Server     ";
 const char menu_main_2[] PROGMEM = "> Garage registrieren";
@@ -27,5 +25,9 @@ const char menu_wifi_1[] PROGMEM = "> Manuell eingeben   ";
 const char menu_wifi_2[] PROGMEM = "> Zur\x81" "ck             ";
 const char* const menu_wifi_entries[] PROGMEM = {menu_wifi_0, menu_wifi_1, menu_wifi_2};
 const int menu_wifi_count = 3;
+
+// Menütext für gefundene WiFi-Netzwerke
+const char menu_wifi_scan_title[] PROGMEM = "Gefundene Netzwerke";
+int menu_wifi_scan_count = 0; // Anzahl der gefundenen Netzwerke, wird dynamisch gesetzt
 
 #endif //HANDYGARAGE_ESP_MENU_DATA_H

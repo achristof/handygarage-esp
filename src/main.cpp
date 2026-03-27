@@ -5,11 +5,12 @@
 #include <oled.h>
 #include <Rotary.h>
 #include <Menu.h>
+#include <Wlan.h>
 
 Preferences prefs;
 
 // Pins und Staus der Drucksensoren der Slots
-const int sensorSlotPin[] = {0, 1, 2, 3, 4};
+const int sensorSlotPin[] = {2, 3, 0, 1, 4};
 bool sensorSlotState[] = {false, false, false, false, false};
 
 // FLAGS für ISR
@@ -62,6 +63,8 @@ void setup() {
 	// Initialize Menu
 	initializeMenu();
 
+	// Initialize WiFi
+	initializeWiFi();
 }
 
 

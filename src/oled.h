@@ -17,28 +17,28 @@
 
 // Reset-Pin wird bei I2C oft nicht benötigt (-1)
 #define OLED_RESET    -1
-#define SCREEN_ADDRESS 0x3C // Standard I2C Adresse für SSD1306
+#define SCREEN_ADDRESS 0x3C // Standard I2C Adresse für SSD1306: 0x3C oder 0x3D
 
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-QRCode qrcode;
+inline Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+inline QRCode qrcode;
 
 // Position der Texte am OLED für die einzelnen Slots
-const int yRowText[] = {16, 26, 36, 46, 56};
-const int xSlotText = 18;
+const uint8_t yRowText[] = {16, 26, 36, 46, 56};
+const uint8_t xSlotText = 18;
 
-void drawQRCode(const char* data) {
+inline void drawQRCode(const char* data) {
     uint8_t qrcodeData[qrcode_getBufferSize(3)];
 
     // Initialisierung: Version 3, niedrige Fehlerkorrektur
     qrcode_initText(&qrcode, qrcodeData, 3, ECC_LOW, data);
 
-    int scale = 2; // Jedes QR-Modul wird 2x2 Pixel groß
+    uint8_t scale = 2; // Jedes QR-Modul wird 2x2 Pixel groß
 
     // Zentrierung berechnen
     // QR-Größe in Pixeln = qrcode.size * scale (29 * 2 = 58)
     int qrPixelSize = qrcode.size * scale;
-    int xOffset = (SCREEN_WIDTH - qrPixelSize) / 2;
-    int yOffset = (SCREEN_HEIGHT - qrPixelSize) / 2;
+    uint8_t xOffset = (SCREEN_WIDTH - qrPixelSize) / 2;
+    uint8_t yOffset = (SCREEN_HEIGHT - qrPixelSize) / 2;
 
     oled.clearDisplay();
 
@@ -62,7 +62,7 @@ void drawQRCode(const char* data) {
     oled.invertDisplay(true);
 }
 
-void printTextForSlot(int slotNumber, const char* text ) {
+inline void printTextForSlot(int slotNumber, const char* text ) {
     int y;
 
     switch (slotNumber) {
@@ -83,7 +83,7 @@ void printTextForSlot(int slotNumber, const char* text ) {
     oled.display();
 }
 
-void showSplashscreen() {
+inline void showSplashscreen() {
     // Zeichne die Bitmap: drawBitmap(x, y, data, breite, höhe, farbe)
     oled.drawBitmap(0, 0, logo, 128, 64, SSD1306_WHITE);
     oled.display();
@@ -101,7 +101,7 @@ void showSplashscreen() {
     delay(2500);
 }
 
-void showSlotscreen() {
+inline void showSlotscreen() {
     oled.clearDisplay();
     oled.setTextColor(SSD1306_WHITE);
     oled.setCursor(0, 0);
@@ -113,13 +113,13 @@ void showSlotscreen() {
     oled.display();
 }
 
-void initializeOLED()
+inline void initializeOLED()
 {
     oled.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);
     // stellt die refresh rate des displays ein, damit QR-Codes gut mit dem
     // Handy gescannt werden können
     oled.ssd1306_command(SSD1306_SETDISPLAYCLOCKDIV);
-    oled.ssd1306_command(0xA0);
+    oled.ssd1306_command(0xD0);
     oled.clearDisplay();
     oled.display();
     oled.setTextColor(SSD1306_WHITE);

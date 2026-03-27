@@ -9,11 +9,11 @@
 #include <Ticker.h>
 
 // Pins für KY-040
-#define ENCODER_CLK 5   // c6: 23
-#define ENCODER_DT  6   // c6: 22
+#define ENCODER_CLK 6   // c6: 23
+#define ENCODER_DT  5   // c6: 22
 #define ENCODER_SW  7   // c6: 15
 
-#define DEBOUNCE_TIME 100
+#define DEBOUNCE_TIME 50
 
 // Schwellenwert für langen Tastendruck (ms)
 #define LONG_PRESS_TIME 800
